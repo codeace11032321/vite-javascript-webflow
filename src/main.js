@@ -368,9 +368,8 @@ function updateUIWithUserProfile(userProfile) {
   }
 
   if (navprofileElement) {
-    navprofileElement.style.backgroundImage = `url(${
-      userProfile.pictureUrl || ''
-    })`
+    navprofileElement.style.backgroundImage = `url(${userProfile.pictureUrl || ''
+      })`
   }
 
   if (emailElement) {
