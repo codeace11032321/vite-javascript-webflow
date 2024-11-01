@@ -367,8 +367,9 @@ function updateUIWithUserProfile(userProfile) {
   }
 
   if (navprofileElement) {
-    navprofileElement.style.backgroundImage = `url(${userProfile.pictureUrl || ''
-      })`
+    navprofileElement.style.backgroundImage = `url(${
+      userProfile.pictureUrl || ''
+    })`
   }
 
   if (emailElement) {
@@ -389,3 +390,49 @@ function clearUserProfileCache() {
     localStorage.removeItem(`userProfile_${user.uid}`)
   }
 }
+
+// Store event listeners
+const eventListeners = []
+
+// Function to add an event listener and track it
+function addEventListenerWithTracking(element, event, handler) {
+  element.addEventListener(event, handler)
+  eventListeners.push({ element, event, handler })
+}
+
+// Function to log active listeners
+function logActiveListeners() {
+  console.log('Active Event Listeners:')
+  eventListeners.forEach((listener, index) => {
+    console.log(
+      `${index + 1}: ${listener.event} on ${listener.element.tagName} (ID: ${
+        listener.element.id
+      })`
+    )
+  })
+}
+
+// Assign event listeners if the elements exist
+if (fileInput) {
+  addEventListenerWithTracking(fileInput, 'change', updateProfilePicture)
+}
+if (signUpForm) {
+  addEventListenerWithTracking(signUpForm, 'submit', handleSignUp)
+}
+if (signInForm) {
+  addEventListenerWithTracking(signInForm, 'submit', handleSignIn)
+}
+if (signOutButton) {
+  addEventListenerWithTracking(signOutButton, 'click', handleSignOut)
+}
+if (onboardingForm) {
+  addEventListenerWithTracking(onboardingForm, 'submit', handleOnboardingSubmit)
+}
+if (uploaderButton) {
+  addEventListenerWithTracking(uploaderButton, 'click', () => {
+    fileInput.click() // Trigger the file input when button is clicked
+  })
+}
+
+// Call this function whenever you want to log active listeners
+logActiveListeners()
