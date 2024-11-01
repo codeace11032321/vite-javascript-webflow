@@ -60,10 +60,12 @@ const fetchAndDisplayAllUsers = async () => {
         const profileElement = document.createElement('div')
         profileElement.classList.add('online-user')
         profileElement.innerHTML = `
-          <img src="${userProfile.profilePicUrl || 'default_image_url'}" alt="${userProfile.name
-          }" style="width: 40px; height: 40px; border-radius: 50%;" />
+          <img src="${userProfile.profilePicUrl || 'default_image_url'}" alt="${
+          userProfile.name
+        }" style="width: 40px; height: 40px; border-radius: 50%;" />
           <span>${userProfile.name}</span>
-          <span class="status">${userProfile.isOnline ? 'Online' : 'Offline'
+          <span class="status">${
+            userProfile.isOnline ? 'Online' : 'Offline'
           }</span>
         `
         onlineUserList.appendChild(profileElement)
@@ -171,7 +173,8 @@ const listenForMessages = async (recipientUid) => {
       const messageElement = document.createElement('div')
       messageElement.classList.add('message', messageClass)
       messageElement.innerHTML = `
-        <img src="${msg.photoURL || 'default_image_url'
+        <img src="${
+          msg.photoURL || 'default_image_url'
         }" alt="User Avatar" id="user-pfl" style="width: 40px; height: 40px; border-radius: 50%;" />
         <p>${msg.text}</p>
       `
@@ -213,5 +216,3 @@ const updateOnlineStatus = async () => {
 
 // Call this function to set online status
 updateOnlineStatus()
-
-
