@@ -28,12 +28,23 @@ signInAnonymously(auth)
     console.error('Error signing in:', error)
   })
 
-// Function to get user profile data
+// Function to get user profile data with caching
 const getUserProfile = async (uid) => {
+  // Check local storage first
+  const cachedProfile = JSON.parse(localStorage.getItem(`userProfile_${uid}`))
+
+  if (cachedProfile) {
+    return cachedProfile // Return cached data
+  }
+
+  // If not cached, fetch from Firestore
   const userDoc = doc(firestore, 'users', uid)
   const docSnapshot = await getDoc(userDoc)
   if (docSnapshot.exists()) {
-    return docSnapshot.data()
+    const userProfile = docSnapshot.data()
+    // Cache the user profile
+    localStorage.setItem(`userProfile_${uid}`, JSON.stringify(userProfile))
+    return userProfile
   } else {
     console.error('User profile not found')
     return null
@@ -59,7 +70,7 @@ const sendMessage = async (e) => {
   }
 
   // Clear the input field immediately
-  messageText.value = ''
+  messageInput.value = ''
 
   // Get user profile to fetch pictureUrl
   const userProfile = await getUserProfile(user.uid)
@@ -96,8 +107,9 @@ const sendMessage = async (e) => {
 const messagesQuery = query(
   collection(firestore, 'messages'),
   orderBy('createdAt', 'asc'),
-  limit()
-) // Limit should have a number
+  limit(50) // Adjust the limit as needed
+)
+
 onSnapshot(messagesQuery, (querySnapshot) => {
   messagesList.innerHTML = ''
   querySnapshot.forEach((doc) => {

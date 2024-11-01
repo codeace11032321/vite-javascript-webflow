@@ -14,6 +14,7 @@ import {
   getDownloadURL,
   storage,
 } from '../src/config'
+
 //============================/////============================///
 // Identify auth action forms
 //============================/////============================///
@@ -231,6 +232,7 @@ function handleSignOut() {
   signOut(auth)
     .then(() => {
       console.log('User signed out')
+      clearUserProfileCache() // Clear cache on sign-out
     })
     .catch((error) => {
       const errorMessage = error.message
@@ -255,15 +257,12 @@ function handleOnboardingSubmit(e) {
 
 //============================/////============================///
 // Handle onboarding profile creation
-// const pictureUrlInput = document.getElementById('onboarding-picture-url')
 //============================/////============================///
 async function handleOnboarding(uid) {
   const name = document.getElementById('onboarding-name').value
-
   const bio = document.getElementById('onboarding-bio').value
 
   const docSnapshot = await getDoc(doc(firestore, 'users', uid))
-
   let pictureUrl = '' // Initialize pictureUrl
 
   if (docSnapshot.exists()) {
@@ -316,51 +315,79 @@ onAuthStateChanged(auth, (user) => {
   }
 })
 
+//============================/////============================///
+// Set user profile attributes with caching
+//============================/////============================///
 async function setUserProfileAttributes(uid) {
+  // Check if user profile is cached
+  const cachedProfile = JSON.parse(localStorage.getItem(`userProfile_${uid}`))
+
+  if (cachedProfile) {
+    updateUIWithUserProfile(cachedProfile)
+    return
+  }
+
   try {
     const userDocRef = doc(firestore, 'users', uid)
     const userDoc = await getDoc(userDocRef)
 
     if (userDoc.exists()) {
       const userProfile = userDoc.data()
-
-      const nameElement = document.querySelector('[data-ms-doc="name"]')
-      const profilePicElement = document.querySelector(
-        '[data-ms-doc="profilepicurl"]'
-      )
-      const emailElement = document.querySelector('[data-ms-doc="email"]')
-      const bioElement = document.querySelector('[data-ms-doc="bio"]')
-      const navprofileElement = document.querySelector(
-        '[data-ms-doc="nav-profile"]'
-      )
-
-      if (nameElement) {
-        nameElement.textContent = userProfile.name || ''
-      }
-
-      if (profilePicElement) {
-        profilePicElement.src = userProfile.pictureUrl || ''
-      }
-
-      if (navprofileElement) {
-        navprofileElement.style.backgroundImage = `url(${
-          userProfile.pictureUrl || ''
-        })`
-      }
-
-      if (emailElement) {
-        emailElement.textContent = userProfile.email || ''
-      }
-
-      if (bioElement) {
-        bioElement.textContent = userProfile.bio || ''
-      }
-
+      // Cache the user profile
+      localStorage.setItem(`userProfile_${uid}`, JSON.stringify(userProfile))
+      updateUIWithUserProfile(userProfile)
       console.log('User profile attributes set successfully')
     } else {
       console.error('User profile does not exist')
     }
   } catch (error) {
     console.error('Error fetching user profile:', error)
+  }
+}
+
+//============================/////============================///
+// Update UI with user profile data
+//============================/////============================///
+function updateUIWithUserProfile(userProfile) {
+  const nameElement = document.querySelector('[data-ms-doc="name"]')
+  const profilePicElement = document.querySelector(
+    '[data-ms-doc="profilepicurl"]'
+  )
+  const emailElement = document.querySelector('[data-ms-doc="email"]')
+  const bioElement = document.querySelector('[data-ms-doc="bio"]')
+  const navprofileElement = document.querySelector(
+    '[data-ms-doc="nav-profile"]'
+  )
+
+  if (nameElement) {
+    nameElement.textContent = userProfile.name || ''
+  }
+
+  if (profilePicElement) {
+    profilePicElement.src = userProfile.pictureUrl || ''
+  }
+
+  if (navprofileElement) {
+    navprofileElement.style.backgroundImage = `url(${
+      userProfile.pictureUrl || ''
+    })`
+  }
+
+  if (emailElement) {
+    emailElement.textContent = userProfile.email || ''
+  }
+
+  if (bioElement) {
+    bioElement.textContent = userProfile.bio || ''
+  }
+}
+
+//============================/////============================///
+// Clear user profile cache on logout
+//============================/////============================///
+function clearUserProfileCache() {
+  const user = auth.currentUser
+  if (user) {
+    localStorage.removeItem(`userProfile_${user.uid}`)
   }
 }
