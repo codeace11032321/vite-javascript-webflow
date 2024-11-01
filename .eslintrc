@@ -1,30 +1,44 @@
 {
-  "parser": "espree",
-  "root": true,
+  "parser": "espree", // Use Espree as the parser for JavaScript
+  "root": true, // Indicates this is the root configuration file
   "parserOptions": {
-    "ecmaVersion": 2021,
-    "sourceType": "module"
+    "ecmaVersion": 2021, // Specify ECMAScript version
+    "sourceType": "module" // Enable ECMAScript modules
   },
   "env": {
-    "es6": true,
-    "node": true,
-    "jest": true,
-    "browser": true
+    "es6": true, // Enable ES6 globals
+    "node": true, // Enable Node.js globals
+    "jest": true, // Enable Jest globals for testing
+    "browser": true // Enable browser globals
   },
-  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
-  "plugins": ["import", "sort-imports-es6-autofix"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended"
+  ], // Extend recommended rules and Prettier integration
+  "plugins": [
+    "import",
+    "sort-imports-es6-autofix"
+  ], // Add additional plugins
   "rules": {
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "import/order": [
+    "@typescript-eslint/explicit-module-boundary-types": "off", // Turn off explicit boundary types for TypeScript
+    "import/order": [ // Define import order rules
       "error",
       {
         "groups": [
-          ["external", "builtin"],
-          ["index", "internal", "sibling", "parent"]
+          [
+            "external",
+            "builtin"
+          ],
+          [
+            "index",
+            "internal",
+            "sibling",
+            "parent"
+          ]
         ],
-        "newlines-between": "always",
+        "newlines-between": "always", // Require new lines between groups
         "alphabetize": {
-          "order": "asc",
+          "order": "asc", // Alphabetize imports
           "caseInsensitive": true
         }
       }

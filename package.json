@@ -1,7 +1,7 @@
 {
   "name": "vite-javascript-webflow",
   "version": "0.0.1",
-  "author": "armandsalle <jomarneri16@gmail.com>",
+  "author": "marjo3 <jomarneri16@gmail.com>",
   "license": "MIT",
   "scripts": {
     "dev": "vite",

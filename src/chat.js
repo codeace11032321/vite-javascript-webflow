@@ -15,6 +15,7 @@ import {
 const messagesList = document.getElementById('messagesList')
 const messageForm = document.getElementById('messageForm')
 const messageInput = document.getElementById('messageInput')
+const chatSubmitButton = document.getElementById('chat-submit') // Get the submit button
 
 const auth = getAuth() // Ensure auth is initialized
 
@@ -57,9 +58,22 @@ const sendMessage = async (e) => {
     return
   }
 
+  // Clear the input field immediately
+  messageText.value = ''
+
   // Get user profile to fetch pictureUrl
   const userProfile = await getUserProfile(user.uid)
   const photoURL = userProfile ? userProfile.pictureUrl : 'default_image_url'
+
+  // Optimistically add the message to the UI
+  const messageElement = document.createElement('div')
+  messageElement.classList.add('message', 'sent')
+  messageElement.innerHTML = `
+    <img src="${photoURL}" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;" />
+    <p>${messageText}</p>
+  `
+  messagesList.appendChild(messageElement)
+  messagesList.scrollTop = messagesList.scrollHeight
 
   try {
     await addDoc(collection(firestore, 'messages'), {
@@ -68,10 +82,14 @@ const sendMessage = async (e) => {
       uid: user.uid,
       photoURL: photoURL,
     })
-    messageInput.value = '' // Clear input after sending
   } catch (error) {
     console.error('Error adding document: ', error)
+    // Optionally remove the optimistically added message if there's an error
+    messagesList.removeChild(messageElement)
   }
+
+  // Hide the message input after sending
+  messageInput.style.display = 'none'
 }
 
 // Listen for new messages in real-time
@@ -99,3 +117,13 @@ onSnapshot(messagesQuery, (querySnapshot) => {
 
 // Add event listener to the form
 messageForm.addEventListener('submit', sendMessage)
+
+// Add event listener to the submit button
+chatSubmitButton.addEventListener('click', sendMessage)
+
+// Add event listener for the Enter key
+messageInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    sendMessage(e)
+  }
+})

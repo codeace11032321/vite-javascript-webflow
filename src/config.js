@@ -8,7 +8,14 @@ import {
   onAuthStateChanged,
   sendEmailVerification,
 } from 'firebase/auth'
-import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore'
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  onSnapshot,
+  startAfter,
+} from 'firebase/firestore'
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 // Your web app's Firebase configuration
@@ -45,6 +52,8 @@ export {
   ref,
   uploadBytes,
   getDownloadURL,
+  onSnapshot,
+  startAfter,
 }
 
 // You can also export your own functions here if needed
