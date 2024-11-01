@@ -106,7 +106,8 @@ onSnapshot(messagesQuery, (querySnapshot) => {
     const messageElement = document.createElement('div')
     messageElement.classList.add('message', messageClass)
     messageElement.innerHTML = `
-      <img src="${msg.photoURL || 'default_image_url'
+      <img src="${
+        msg.photoURL || 'default_image_url'
       }" alt="User Avatar" style="width: 40px; height: 40px; border-radius: 50%;" />
       <p>${msg.text}</p>
     `
