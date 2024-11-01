@@ -20,14 +20,23 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyB2R6bNoBAdk9C4rvxDVu5ipEBLqu7JGjw',
-  authDomain: 'green-car-4a273.firebaseapp.com',
-  projectId: 'green-car-4a273',
-  storageBucket: 'green-car-4a273.appspot.com',
-  messagingSenderId: '715460877679',
-  appId: '1:715460877679:web:9596b97ab4d13555195c9a',
-  measurementId: 'G-9JJ02D0Q7G',
-}
+
+  apiKey: "AIzaSyBPCuTbe_orOYXdKX_FofLprfaeIXRaPQY",
+
+  authDomain: "greenvcm.firebaseapp.com",
+
+  projectId: "greenvcm",
+
+  storageBucket: "greenvcm.firebasestorage.app",
+
+  messagingSenderId: "991889556349",
+
+  appId: "1:991889556349:web:9e4ae6b1f7818f4466c214",
+
+  measurementId: "G-35W6G7W6PJ"
+
+};
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
