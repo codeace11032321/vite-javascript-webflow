@@ -367,9 +367,8 @@ function updateUIWithUserProfile(userProfile) {
   }
 
   if (navprofileElement) {
-    navprofileElement.style.backgroundImage = `url(${
-      userProfile.pictureUrl || ''
-    })`
+    navprofileElement.style.backgroundImage = `url(${userProfile.pictureUrl || ''
+      })`
   }
 
   if (emailElement) {
@@ -405,8 +404,7 @@ function logActiveListeners() {
   console.log('Active Event Listeners:')
   eventListeners.forEach((listener, index) => {
     console.log(
-      `${index + 1}: ${listener.event} on ${listener.element.tagName} (ID: ${
-        listener.element.id
+      `${index + 1}: ${listener.event} on ${listener.element.tagName} (ID: ${listener.element.id
       })`
     )
   })
