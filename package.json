@@ -16,7 +16,6 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
-    "jquery": "^3.6.0",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "vite": "^5.4.10",

@@ -344,7 +344,6 @@ async function setUserProfileAttributes(uid) {
     console.error('Error fetching user profile:', error)
   }
 }
-
 //============================/////============================///
 // Update UI with user profile data
 //============================/////============================///
